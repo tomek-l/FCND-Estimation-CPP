@@ -173,7 +173,16 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   Quaternion<float> attitude = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, curState(6));
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
+  
+  // See trasition function - Equation(49) in Estimation for Quadrotors
+  predictedState(0) = curState(0) + dt*curState(3); // x = x + dt*dx
+  predictedState(1) = curState(1) + dt*curState(4);
+  predictedState(2) = curState(2) + dt*curState(5);
 
+  V3F u_I = attitude.Rotate_BtoI(accel);
+  predictedState(3) = curState(3) + dt*u_I.x;
+  predictedState(4) = curState(4) + dt*u_I.y;
+  predictedState(5) = curState(5) + dt*u_I.z - dt * 9.81;
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
