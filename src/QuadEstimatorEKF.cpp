@@ -210,6 +210,27 @@ MatrixXf QuadEstimatorEKF::GetRbgPrime(float roll, float pitch, float yaw)
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
 
+  // Equation (52)
+  float s_th = sin(pitch);
+  float c_th = cos(pitch);
+
+  float s_phi = sin(roll);
+  float c_phi = cos(roll);
+  
+  float s_psi = sin(yaw);
+  float c_psi = cos(yaw);
+
+  // row 1
+  RbgPrime(0, 0) = - c_th *  s_psi;
+  RbgPrime(0, 1) = - s_phi * s_th * s_psi - c_phi * c_psi;
+  RbgPrime(0, 2) = - c_phi * s_th * s_psi + s_phi * c_psi;
+  
+  // row 2
+  RbgPrime(1, 0) = c_phi * c_psi;
+  RbgPrime(1, 1) = s_phi * s_th * c_psi - c_phi * s_th;
+  RbgPrime(1, 2) = c_phi * s_th * c_psi + s_phi * s_psi;
+
+  // row 3: not necesary to set RbgPrime(2, *) because of RbgPrime.setZero();
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
